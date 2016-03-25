@@ -1,0 +1,194 @@
+#!/bin/bash
+
+if [ -n "$DEBUG" ] ; then
+    set -x
+fi
+
+here="$(cd $(dirname $0) && pwd)"
+
+. $here/opennebula-common
+
+function setup_interface() {
+    iface="$1"
+
+    network_mask_var="${iface}_MASK"
+    case "${!network_mask_var}" in
+	128.0.0.0)
+	    netmask=1
+	    ;;
+
+	192.0.0.0)
+	    netmask=2
+	    ;;
+
+	224.0.0.0)
+	    netmask=3
+	    ;;
+
+	240.0.0.0)
+	    netmask=4
+	    ;;
+
+	248.0.0.0)
+	    netmask=5
+	    ;;
+
+	252.0.0.0)
+	    netmask=6
+	    ;;
+
+	254.0.0.0)
+	    netmask=7
+	    ;;
+
+	255.0.0.0)
+	    netmask=8
+	    ;;
+
+	255.128.0.0)
+	    netmask=9
+	    ;;
+
+	255.192.0.0)
+	    netmask=10
+	    ;;
+
+	255.224.0.0)
+	    netmask=11
+	    ;;
+
+	255.240.0.0)
+	    netmask=12
+	    ;;
+
+	255.248.0.0)
+	    netmask=13
+	    ;;
+
+	255.252.0.0)
+	    netmask=14
+	    ;;
+
+	255.254.0.0)
+	    netmask=15
+	    ;;
+
+	255.255.0.0)
+	    netmask=16
+	    ;;
+
+	255.255.128.0)
+	    netmask=17
+	    ;;
+
+	255.255.192.0)
+	    netmask=18
+	    ;;
+
+	255.255.224.0)
+	    netmask=19
+	    ;;
+
+	255.255.240.0)
+	    netmask=20
+	    ;;
+
+	255.255.248.0)
+	    netmask=21
+	    ;;
+
+	255.255.252.0)
+	    netmask=22
+	    ;;
+
+	255.255.254.0)
+	    netmask=23
+	    ;;
+
+	255.255.255.0)
+	    netmask=24
+	    ;;
+
+	255.255.255.128)
+	    netmask=25
+	    ;;
+
+	255.255.255.192)
+	    netmask=26
+	    ;;
+
+	255.255.255.224)
+	    netmask=27
+	    ;;
+
+	255.255.255.240)
+	    netmask=28
+	    ;;
+
+	255.255.255.248)
+	    netmask=29
+	    ;;
+
+	255.255.255.252)
+	    netmask=30
+	    ;;
+
+	255.255.255.254)
+	    netmask=31
+	    ;;
+	*)
+	    echo "Unsupported netmask ${!network_mask_var}"
+	    exit 1
+	    ;;
+    esac
+
+    ip_address_var="${iface}_IP"
+    mac_address_var="${iface}_MAC"
+    gateway_var="${iface}_GATEWAY"
+    dns_var="${iface}_DNS"
+
+    network_conf="/etc/systemd/network/99-opennebula-$(echo ${!mac_address_var} | tr : -).network"
+    if [ -n "$DEBUG" ] ; then
+	network_conf="/tmp/opennebula.network"
+    fi
+
+    echo "${!mac_address_var}: IP Address is ${!ip_address_var}/$netmask"
+    cat > $network_conf <<EOT
+[Match]
+MACAddress=${!mac_address_var}
+
+[Link]
+MACAddress=${!mac_address_var}
+
+[Network]
+DHCP=no
+Address=${!ip_address_var}/$netmask
+EOT
+    gateway="${!gateway_var}"
+    if [ -n "$gateway" ] ; then
+	cat >> $network_conf <<EOT
+Gateway=$gateway
+EOT
+    fi
+    dns="${!dns_var}"
+    if [ -n "$dns" ] ; then
+	cat >> $network_conf <<EOT
+DNS=$dns
+EOT
+    fi
+    echo "Network config $network_conf:"
+    cat $network_conf
+}
+
+if [ "$NETWORK" != "YES" ] ; then
+    echo "No network configuration in OpenNebula"
+    exit 0
+fi
+
+# Set up network interfaces (we assume there are no more than four).
+for iface in ETH0 ETH1 ETH2 ETH3 ; do
+    mac_address_var="${iface}_MAC"
+    if [ -n "${!mac_address_var}" ] ; then
+	setup_interface $iface
+    fi
+done

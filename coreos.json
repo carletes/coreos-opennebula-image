@@ -1,0 +1,59 @@
+{
+    "description": "CoreOS image for OpenNebula",
+    "variables": {
+	"accelerator": "kvm",
+	"boot_wait": "60s",
+	"coreos_channel": "alpha",
+	"coreos_version": "991.0.0",
+	"headless": "false",
+	"install_target": "/dev/vda",
+	"iso_checksum": "45cc5c753ecc959aa6ed62b6c683c7d3",
+	"iso_checksum_type": "md5",
+	"memory": "1024"
+    },
+    "builders": [
+	{
+	    "type": "qemu",
+	    "iso_url": "http://{{user `coreos_channel`}}.release.core-os.net/amd64-usr/{{user `coreos_version`}}/coreos_production_iso_image.iso",
+	    "iso_checksum": "{{user `iso_checksum`}}",
+	    "iso_checksum_type": "{{user `iso_checksum_type`}}",
+	    "ssh_username": "core",
+	    "accelerator": "{{user `accelerator`}}",
+	    "boot_command": [
+		"sudo -i<enter>",
+		"systemctl stop sshd.socket<enter>",
+		"wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
+		"coreos-install -d {{user `install_target`}} -C {{user `coreos_channel`}} -c install.yml<enter>",
+		"reboot<enter>"
+	    ],
+	    "boot_wait": "{{user `boot_wait`}}",
+	    "disk_size": 50000,
+	    "format": "qcow2",
+	    "headless": "{{user `headless`}}",
+	    "http_directory": "files",
+	    "output_directory": "builds/coreos-{{user `coreos_channel`}}-{{user `coreos_version`}}-qemu",
+	    "qemuargs": [
+		["-m", "{{user `memory`}}"]
+	    ],
+	    "shutdown_command": "sudo -S shutdown -P now",
+	    "communicator": "ssh",
+	    "ssh_private_key_file": "files/vagrant_id_rsa",
+	    "ssh_timeout": "60m",
+	    "ssh_username": "core"
+	}
+    ],
+    "provisioners": [
+	{
+	    "type": "file",
+	    "source": "oem/",
+	    "destination": "/home/core"
+	},
+	{
+	    "type": "shell",
+	    "environment_vars": [],
+	    "scripts": [
+		"scripts/oem.sh"
+	    ]
+	}
+    ]
+}

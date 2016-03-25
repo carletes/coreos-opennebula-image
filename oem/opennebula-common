@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -n "$DEBUG" ] ; then
+    set -x
+fi
+
+echo "Reading OpenNebula context variables"
+
+if [ ! -r /mnt/context.sh ] ; then
+    mount -L CONTEXT -o ro /mnt
+fi
+. /mnt/context.sh
+umount /mnt

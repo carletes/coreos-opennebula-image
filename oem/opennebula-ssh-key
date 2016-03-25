@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -n "$DEBUG" ] ; then
+    set -x
+fi
+
+here="$(cd $(dirname $0) && pwd)"
+
+. $here/opennebula-common
+
+echo "Adding OpenNebula SSH public key"
+echo $SSH_PUBLIC_KEY | update-ssh-keys -u core -a coreos-cloudinit
