@@ -47,6 +47,9 @@ register: $(PACKER_IMAGE)
 	  --driver qcow2 \
 	  --datastore $(OPENNEBULA_DATASTORE) \
 	  --path $(PACKER_IMAGE)
+	echo "EC2_AMI=YES" > .ec2_attrs
+	oneimage update $(OPENNEBULA_IMAGE) --append .ec2_attrs
+	rm -f .ec2_attrs
 
 clean:
 	rm -rf builds

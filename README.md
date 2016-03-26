@@ -53,6 +53,11 @@ versions:
 
     $ make register COREOS_CHANNEL=stable COREOS_VERSION=899.13.0 COREOS_MD5_CHECKSUM=31f1756ecdf5bca92a8bff355417598f
 
+If you plan on using OpenNebula's
+[EC2 interface](http://docs.opennebula.org/4.14/advanced_administration/public_cloud/ec2qcg.html),
+the image should be tagged with the attribute `EC2_AMI` set to `YES`
+(the `register` target does this for you).
+
 
 ## Creating an OpenNebula VM template
 
