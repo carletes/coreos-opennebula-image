@@ -11,8 +11,11 @@ here="$(cd $(dirname $0) && pwd)"
 echo "Running cloud-init with user data"
 
 if [ -z "$USER_DATA" ] ; then
-    echo "No user data, leaving."
-    exit 0
+    if [ -z "$EC2_USER_DATA" ] ; then
+	echo "No user data, leaving."
+	exit 0
+    fi
+    USER_DATA="$(echo $EC2_USER_DATA | base64 -d)"
 fi
 
 user_data="$(mktemp /tmp/user-data-XXXXXX.yml)"
