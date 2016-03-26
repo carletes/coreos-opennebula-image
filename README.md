@@ -74,64 +74,41 @@ follow these conventions:
 * You should add a user input field called `USER_DATA`, so that you
   may pass extra
   [cloud-config](https://coreos.com/os/docs/latest/cloud-config.html)
-  user data to configure yur CoreOS instance.
+  user data to configure your CoreOS instance.
 
-For example:
+The following template assumes a CoreOS image called `coreos-alpha`,
+and two virtual networks called `public-net` and `private-net`:
 
-	$ onetemplate show -x coreos-alpha
-	<VMTEMPLATE>
-	  <ID>7</ID>
-	  <UID>2</UID>
-	  <GID>0</GID>
-	  <UNAME>carlos</UNAME>
-	  <GNAME>oneadmin</GNAME>
-	  <NAME>coreos-alpha</NAME>
-	  <PERMISSIONS>
-		<OWNER_U>1</OWNER_U>
-		<OWNER_M>1</OWNER_M>
-		<OWNER_A>0</OWNER_A>
-		<GROUP_U>0</GROUP_U>
-		<GROUP_M>0</GROUP_M>
-		<GROUP_A>0</GROUP_A>
-		<OTHER_U>0</OTHER_U>
-		<OTHER_M>0</OTHER_M>
-		<OTHER_A>0</OTHER_A>
-	  </PERMISSIONS>
-	  <REGTIME>1458841514</REGTIME>
-	  <TEMPLATE>
-		<CONTEXT>
-		  <NETWORK><![CDATA[YES]]></NETWORK>
-		  <SSH_PUBLIC_KEY><![CDATA[$USER[SSH_PUBLIC_KEY]]]></SSH_PUBLIC_KEY>
-		  <USER_DATA><![CDATA[$USER_DATA]]></USER_DATA>
-		</CONTEXT>
-		<CPU><![CDATA[1]]></CPU>
-		<DISK>
-		  <DRIVER><![CDATA[qcow2]]></DRIVER>
-		  <IMAGE><![CDATA[coreos-alpha]]></IMAGE>
-		  <IMAGE_UNAME><![CDATA[carlos]]></IMAGE_UNAME>
-		</DISK>
-		<GRAPHICS>
-		  <LISTEN><![CDATA[0.0.0.0]]></LISTEN>
-		  <TYPE><![CDATA[VNC]]></TYPE>
-		</GRAPHICS>
-		<HYPERVISOR><![CDATA[kvm]]></HYPERVISOR>
-		<MEMORY><![CDATA[512]]></MEMORY>
-		<NIC>
-		  <NETWORK><![CDATA[public-net]]></NETWORK>
-		  <NETWORK_UNAME><![CDATA[carlos]]></NETWORK_UNAME>
-		</NIC>
-		<NIC>
-		  <NETWORK><![CDATA[private-net]]></NETWORK>
-		  <NETWORK_UNAME><![CDATA[carlos]]></NETWORK_UNAME>
-		</NIC>
-		<OS>
-		  <ARCH><![CDATA[x86_64]]></ARCH>
-		</OS>
-		<USER_INPUTS>
-		  <USER_DATA><![CDATA[M|text|User data for `cloud-init`]]></USER_DATA>
-		</USER_INPUTS>
-	  </TEMPLATE>
-	</VMTEMPLATE>
+	NAME = coreos-alpha
+	MEMORY = 512
+	CPU = 1
+	HYPERVISOR = kvm
+	OS = [
+	  ARCH = x86_64,
+	  BOOT = hd
+	]
+	DISK = [
+	  DRIVER = qcow2,
+	  IMAGE = coreos-alpha
+	]
+	NIC=[
+	  NETWORK = public-net
+	]
+	NIC=[
+	  NETWORK = private-net
+	]
+	GRAPHICS = [
+	  TYPE = VNC,
+	  LISTEN = 0.0.0.0
+	]
+	USER_INPUTS = [
+	  USER_DATA = "M|text|User data for `cloud-config`"
+	]
+	CONTEXT = [
+	  NETWORK = YES,
+	  SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]",
+	  USER_DATA = "$USER_DATA"
+	]
 
 
 ## Contributing

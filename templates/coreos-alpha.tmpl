@@ -1,0 +1,30 @@
+NAME = coreos-alpha
+MEMORY = 512
+CPU = 1
+HYPERVISOR = kvm
+OS = [
+  ARCH = x86_64,
+  BOOT = hd
+]
+DISK = [
+  DRIVER = qcow2,
+  IMAGE = coreos-alpha
+]
+NIC=[
+  NETWORK = public-net
+]
+NIC=[
+  NETWORK = private-net
+]
+GRAPHICS = [
+  TYPE = VNC,
+  LISTEN = 0.0.0.0
+]
+USER_INPUTS = [
+  USER_DATA = "M|text|User data for `cloud-config`"
+]
+CONTEXT = [
+  NETWORK = YES,
+  SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]",
+  USER_DATA = "$USER_DATA"
+]
