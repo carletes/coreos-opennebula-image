@@ -1,0 +1,23 @@
+NAME = t1.micro
+EC2_INSTANCE_TYPE = t1.micro
+MEMORY = 512
+CPU = 1
+HYPERVISOR = kvm
+OS = [
+  ARCH = x86_64,
+  BOOT = hd
+]
+NIC=[
+  NETWORK = public-net
+]
+NIC=[
+  NETWORK = private-net
+]
+GRAPHICS = [
+  TYPE = VNC,
+  LISTEN = 0.0.0.0
+]
+CONTEXT = [
+  NETWORK = YES,
+  SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]"
+]

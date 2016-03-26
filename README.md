@@ -77,7 +77,9 @@ follow these conventions:
   user data to configure your CoreOS instance.
 
 The following template assumes a CoreOS image called `coreos-alpha`,
-and two virtual networks called `public-net` and `private-net`:
+and two virtual networks called `public-net` and `private-net`, and
+uses them to provide the disk and the two network interfaces of a
+virtual machine:
 
 	NAME = coreos-alpha
 	MEMORY = 512
@@ -110,6 +112,48 @@ and two virtual networks called `public-net` and `private-net`:
 	  USER_DATA = "$USER_DATA"
 	]
 
+If you plan on using OpenNebula's
+[EC2 interface](http://docs.opennebula.org/4.14/advanced_administration/public_cloud/ec2qcg.html),
+your template should follow instead these conventions:
+
+* It must **not** use any image, since the disk will be provided by
+  the AMI you choose when you create your instances.
+* It must include the attribute `EC2_INSTANCE_TYPE` set to a valid AWS
+  instance type. If you plan on using OpenNebula's `econe-*`
+  command-line tools, ensure that name is recognised by the Ruby AWS
+  modules they depend on.
+* The first network interface will be used as CoreOS' public IPv4
+  address.
+* If there is a second network interface defined, it will be used as
+  CoreOS' private IPv4 network.
+
+The following template assumes you have two virtual networks called
+`public-net` and `private-net`, and uses them to provide the two
+network interfaces of a virtual machine:
+
+	NAME = t1.micro
+	EC2_INSTANCE_TYPE = t1.micro
+	MEMORY = 512
+	CPU = 1
+	HYPERVISOR = kvm
+	OS = [
+	  ARCH = x86_64,
+	  BOOT = hd
+	]
+	NIC=[
+	  NETWORK = public-net
+	]
+	NIC=[
+	  NETWORK = private-net
+	]
+	GRAPHICS = [
+	  TYPE = VNC,
+	  LISTEN = 0.0.0.0
+	]
+	CONTEXT = [
+	  NETWORK = YES,
+	  SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]"
+	]
 
 ## Contributing
 
