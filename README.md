@@ -108,7 +108,7 @@ virtual machine:
 	]
 	CONTEXT = [
 	  NETWORK = YES,
-	  HOSTNAME = "$NAME",
+	  SET_HOSTNAME = "$NAME",
 	  SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]",
 	  USER_DATA = "$USER_DATA"
 	]
@@ -156,7 +156,7 @@ network interfaces of a virtual machine:
 	]
 	CONTEXT = [
 	  NETWORK = YES,
-	  HOSTNAME = "$NAME",
+	  SET_HOSTNAME = "$NAME",
 	  SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]"
 	]
 
@@ -167,7 +167,7 @@ In both examples above, the host name in the VM will be set to the
 OpenNebula VM name. If you want the host name to be assigned by
 reverse DNS lookup, replace the line:
 
-    HOSTNAME = "SNAME"
+    SET_HOSTNAME = "SNAME"
 
 with:
 
