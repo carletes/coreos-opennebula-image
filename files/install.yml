@@ -32,6 +32,21 @@ coreos:
             Environment=SYSTEMD_LOG_LEVEL=debug
       command: restart
 
+    # Set host name (might need network to be up in order to do DNS
+    # queries).
+    - name: opennebula-hostname.service
+      command: restart
+      runtime: yes
+      content: |
+        [Unit]
+        Description=Set host name.
+        Requires=network.target
+        After=network.target
+
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/share/oem/bin/opennebula-hostname
+
     # Set SSH public key for CoreOS user `core` from OpenNebula
     # context variables.
     - name: opennebula-ssh-key.service

@@ -12,6 +12,7 @@ PACKER_IMAGE_DEPS = \
 	oem/coreos-setup-environment \
 	oem/opennebula-cloudinit \
 	oem/opennebula-common \
+	oem/opennebula-hostname \
 	oem/opennebula-network \
 	oem/opennebula-ssh-key \
 	scripts/oem.sh

@@ -108,9 +108,13 @@ virtual machine:
 	]
 	CONTEXT = [
 	  NETWORK = YES,
+	  HOSTNAME = "$NAME",
 	  SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]",
 	  USER_DATA = "$USER_DATA"
 	]
+
+
+### Templates for the OpenNebula EC2 interface
 
 If you plan on using OpenNebula's
 [EC2 interface](http://docs.opennebula.org/4.14/advanced_administration/public_cloud/ec2qcg.html),
@@ -152,8 +156,33 @@ network interfaces of a virtual machine:
 	]
 	CONTEXT = [
 	  NETWORK = YES,
+	  HOSTNAME = "$NAME",
 	  SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]"
 	]
+
+
+### Setting the VM host name
+
+In both examples above, the host name in the VM will be set to the
+OpenNebula VM name. If you want the host name to be assigned by
+reverse DNS lookup, replace the line:
+
+    HOSTNAME = "SNAME"
+
+with:
+
+    DNS_HOSTNAME = YES
+
+in the `CONTEXT` section, as you would do with any other OpenNebula
+template.
+
+If no host name is passed (or none can be found with reverse DNS
+lookup), the VM host name will be set to a value based on the MAC
+address of the first network interface.
+
+If you specify a value for the `hostname` field in the `cloud-config`
+user data, it will take precedence over anything else.
+
 
 ## Contributing
 
