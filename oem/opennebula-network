@@ -196,8 +196,8 @@ if [ "$NETWORK" != "YES" ] ; then
     exit 0
 fi
 
-# Set up network interfaces (we assume there are no more than four).
-for iface in ETH0 ETH1 ETH2 ETH3 ; do
+# Set up all network interfaces.
+for iface in ETH0 ETH1 ETH2 ETH3 ETH4 ETH4 ETH6 ETH7 ETH8 ETH9 ; do
     mac_address_var="${iface}_MAC"
     if [ -n "${!mac_address_var}" ] ; then
 	setup_interface $iface
