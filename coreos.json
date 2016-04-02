@@ -4,10 +4,10 @@
 	"accelerator": "kvm",
 	"boot_wait": "60s",
 	"coreos_channel": "alpha",
-	"coreos_version": "991.0.0",
+	"coreos_version": "<not-set>",
 	"headless": "false",
 	"install_target": "/dev/vda",
-	"iso_checksum": "45cc5c753ecc959aa6ed62b6c683c7d3",
+	"iso_checksum": "<not-set>",
 	"iso_checksum_type": "md5",
 	"memory": "1024"
     },
