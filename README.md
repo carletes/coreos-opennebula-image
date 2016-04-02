@@ -67,10 +67,10 @@ which uses the CoreOS images you have built. The VM template should
 follow these conventions:
 
 * It should use the image you have created and uploaded.
-* The first network interface will be used as CoreOS' public IPv4
+* The first network interface will be used as CoreOS' private IPv4
   address.
 * If there is a second network interface defined, it will be used as
-  CoreOS' private IPv4 network.
+  CoreOS' public IPv4 network.
 * You should add a user input field called `USER_DATA`, so that you
   may pass extra
   [cloud-config](https://coreos.com/os/docs/latest/cloud-config.html)
@@ -94,10 +94,10 @@ virtual machine:
 	  IMAGE = coreos-alpha
 	]
 	NIC=[
-	  NETWORK = public-net
+	  NETWORK = private-net
 	]
 	NIC=[
-	  NETWORK = private-net
+	  NETWORK = public-net
 	]
 	GRAPHICS = [
 	  TYPE = VNC,
@@ -126,10 +126,10 @@ your template should follow instead these conventions:
   instance type. If you plan on using OpenNebula's `econe-*`
   command-line tools, ensure that name is recognised by the Ruby AWS
   modules they depend on.
-* The first network interface will be used as CoreOS' public IPv4
+* The first network interface will be used as CoreOS' private IPv4
   address.
 * If there is a second network interface defined, it will be used as
-  CoreOS' private IPv4 network.
+  CoreOS' public IPv4 network.
 
 The following template assumes you have two virtual networks called
 `public-net` and `private-net`, and uses them to provide the two
@@ -145,10 +145,10 @@ network interfaces of a virtual machine:
 	  BOOT = hd
 	]
 	NIC=[
-	  NETWORK = public-net
+	  NETWORK = private-net
 	]
 	NIC=[
-	  NETWORK = private-net
+	  NETWORK = public-net
 	]
 	GRAPHICS = [
 	  TYPE = VNC,

@@ -25,9 +25,9 @@ if [ -z "$ETH0_IP" ] ; then
     exit 0
 fi
 
-echo "COREOS_PUBLIC_IPV4=$ETH0_IP" >> $ENV
+echo "COREOS_PRIVATE_IPV4=$ETH0_IP" >> $ENV
 if [ -n "$ETH1_IP" ] ; then
-    echo "COREOS_PRIVATE_IPV4=$ETH1_IP" >> $ENV
+    echo "COREOS_PUBLIC_IPV4=$ETH1_IP" >> $ENV
 else
-    echo "COREOS_PRIVATE_IPV4=$ETH0_IP" >> $ENV
+    echo "COREOS_PUBLIC_IPV4=$ETH0_IP" >> $ENV
 fi
