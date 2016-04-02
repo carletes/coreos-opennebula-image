@@ -13,6 +13,8 @@ function setup_interface() {
 
     network_mask_var="${iface}_MASK"
     case "${!network_mask_var}" in
+	"")
+	    ;;
 	128.0.0.0)
 	    netmask=1
 	    ;;
@@ -161,20 +163,29 @@ MACAddress=${!mac_address_var}
 MACAddress=${!mac_address_var}
 
 [Network]
+EOT
+
+    if [ -n "${!ip_address_var}" ] ; then
+        cat >> $network_conf <<EOT
 DHCP=no
 Address=${!ip_address_var}/$netmask
 EOT
-    gateway="${!gateway_var}"
-    if [ -n "$gateway" ] ; then
-	cat >> $network_conf <<EOT
+	gateway="${!gateway_var}"
+	if [ -n "$gateway" ] ; then
+	    cat >> $network_conf <<EOT
 Gateway=$gateway
 EOT
-    fi
-    dns="${!dns_var}"
-    if [ -n "$dns" ] ; then
-	cat >> $network_conf <<EOT
+	fi
+	dns="${!dns_var}"
+	if [ -n "$dns" ] ; then
+	    cat >> $network_conf <<EOT
 DNS=$dns
 EOT
+	fi
+    else
+	cat >> $network_conf <<EOF
+DHCP=yes
+EOF
     fi
     echo "Network config $network_conf:"
     cat $network_conf
