@@ -6,6 +6,7 @@ OPENNEBULA_DATASTORE = default
 PACKER_IMAGE_DIR = builds/coreos-$(COREOS_CHANNEL)-$(COREOS_VERSION)-qemu
 PACKER_IMAGE_NAME = coreos-$(COREOS_CHANNEL)-$(COREOS_VERSION)
 PACKER_IMAGE = $(PACKER_IMAGE_DIR)/$(PACKER_IMAGE_NAME)
+PACKER_IMAGE_BZ2 = $(PACKER_IMAGE).bz2
 PACKER_IMAGE_DEPS = \
 	coreos.json \
 	packer.sh \
@@ -35,6 +36,7 @@ $(PACKER_IMAGE): $(PACKER_IMAGE_DEPS)
 	  PACKER_LOG=1 \
 	    ./packer.sh build coreos.json
 	mv $(PACKER_IMAGE_DIR)/packer-qemu $(PACKER_IMAGE)
+	bzip2 -9vk $(PACKER_IMAGE)
 	echo "Image file $(PACKER_IMAGE) ready"
 
 .PHONY: appliance register clean
@@ -59,7 +61,8 @@ appliance: $(PACKER_IMAGE)
 	  --output appliance.json \
 	  $(COREOS_CHANNEL) \
 	  $(COREOS_VERSION) \
-	  $(PACKER_IMAGE)
+	  $(PACKER_IMAGE).bz2 \
+	  $(IMAGE_URL)
 
 clean:
 	rm -rf builds

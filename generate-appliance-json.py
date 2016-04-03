@@ -65,7 +65,9 @@ def main():
     p.add_argument("version",
                    help="CoreOS version of the image")
     p.add_argument("image",
-                   help="path to the qcow2 image file to upload")
+                   help="path to the qcow2 image file")
+    p.add_argument("url",
+                   help="URL of qcow2 image file")
     p.add_argument("--output",
                    help=("path to the outpu JSON file. If not given, the "
                          "image will not be uploaded."))
@@ -90,16 +92,17 @@ def main():
         "files": [
             {
                 "name": "coreos-%s-%s" % (args.channel, args.version),
+                "url": args.url,
                 "size": str(os.stat(args.image).st_size),
                 "md5": md5_hash(args.image),
-                "compression": "none",
+                "compression": "bz2",
                 "driver": image_fmt,
                 "type": "OS",
                 "hypervisor": hypervisor,
                 "format": image_fmt,
                 "os-id": os_id,
                 "os-release": os_release,
-                "os-arch": os_arch
+                "os-arch": os_arch,
             }
         ],
         "hypervisor": hypervisor,
@@ -123,7 +126,6 @@ def md5_hash(fname):
     with open(fname, "rb") as f:
         md5.update(f.read())
     return md5.hexdigest()
-
 
 
 if __name__ == "__main__":
