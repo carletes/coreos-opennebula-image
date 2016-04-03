@@ -4,7 +4,8 @@ COREOS_MD5_CHECKSUM = 2207f09699ee37e79c32aae972432059
 OPENNEBULA_DATASTORE = default
 
 PACKER_IMAGE_DIR = builds/coreos-$(COREOS_CHANNEL)-$(COREOS_VERSION)-qemu
-PACKER_IMAGE = $(PACKER_IMAGE_DIR)/packer-qemu
+PACKER_IMAGE_NAME = coreos-$(COREOS_CHANNEL)-$(COREOS_VERSION)
+PACKER_IMAGE = $(PACKER_IMAGE_DIR)/$(PACKER_IMAGE_NAME)
 PACKER_IMAGE_DEPS = \
 	coreos.json \
 	packer.sh \
@@ -33,9 +34,10 @@ $(PACKER_IMAGE): $(PACKER_IMAGE_DEPS)
 	  COREOS_MD5_CHECKSUM=$(COREOS_MD5_CHECKSUM) \
 	  PACKER_LOG=1 \
 	    ./packer.sh build coreos.json
+	mv $(PACKER_IMAGE_DIR)/packer-qemu $(PACKER_IMAGE)
 	echo "Image file $(PACKER_IMAGE) ready"
 
-.PHONY: register clean
+.PHONY: appliance register clean
 
 OPENNEBULA_IMAGE = coreos-$(COREOS_CHANNEL)
 
@@ -51,6 +53,13 @@ register: $(PACKER_IMAGE)
 	echo "EC2_AMI=YES" > .ec2_attrs
 	oneimage update $(OPENNEBULA_IMAGE) --append .ec2_attrs
 	rm -f .ec2_attrs
+
+appliance: $(PACKER_IMAGE)
+	./generate-appliance-json.py \
+	  --output appliance.json \
+	  $(COREOS_CHANNEL) \
+	  $(COREOS_VERSION) \
+	  $(PACKER_IMAGE)
 
 clean:
 	rm -rf builds
