@@ -52,7 +52,8 @@
 	    "type": "shell",
 	    "environment_vars": [],
 	    "scripts": [
-		"scripts/oem.sh"
+		"scripts/oem.sh",
+		"scripts/cleanup.sh"
 	    ]
 	}
     ]
