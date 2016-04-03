@@ -27,7 +27,7 @@
 		"reboot<enter>"
 	    ],
 	    "boot_wait": "{{user `boot_wait`}}",
-	    "disk_size": 50000,
+	    "disk_size": 10240,
 	    "format": "qcow2",
 	    "headless": "{{user `headless`}}",
 	    "http_directory": "files",
