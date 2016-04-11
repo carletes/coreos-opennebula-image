@@ -62,8 +62,6 @@ def main():
     p = argparse.ArgumentParser(description=__doc__.strip())
     p.add_argument("channel",
                    help="CoreOS channel of the image")
-    p.add_argument("version",
-                   help="CoreOS version of the image")
     p.add_argument("image",
                    help="path to the qcow2 image file")
     p.add_argument("url",
@@ -75,14 +73,13 @@ def main():
     args = p.parse_args()
     vars = {
         "channel": args.channel,
-        "version": args.version,
     }
 
     hypervisor = "KVM"
     image_fmt = "qcow2"
     os_arch = "x86_64"
     os_id = "CoreOS"
-    os_release = "%s (%s channel)" % (args.version, args.channel)
+    os_release = "%s channel" % (args.channel,)
     appliance = json.dumps({
         "name": "CoreOS %s" % (args.channel,),
         "short_description": SHORT_DESCRIPTION_TEMPLATE % vars,
@@ -91,7 +88,7 @@ def main():
         "opennebula_version": "4.14",
         "files": [
             {
-                "name": "coreos-%s-%s" % (args.channel, args.version),
+                "name": "coreos-%s" % (args.channel,),
                 "url": args.url,
                 "size": str(os.stat(args.image).st_size),
                 "md5": md5_hash(args.image),

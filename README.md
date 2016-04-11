@@ -22,7 +22,7 @@ The build process is driven with `make`:
 
     $ make
 	[..]
-	Image file builds/coreos-alpha-991.0.0-qemu/packer-qemu ready
+	Image file builds/coreos-alpha-qemu/coreos-alpha ready
 	$
 
 By default, `make` will build a CoreOS image from the
@@ -30,9 +30,9 @@ By default, `make` will build a CoreOS image from the
 a particular CoreOS version and channel by passing the appropriate
 parameters to `make`:
 
-    $ make COREOS_CHANNEL=stable COREOS_VERSION=899.13.0 COREOS_MD5_CHECKSUM=31f1756ecdf5bca92a8bff355417598f
+    $ make COREOS_CHANNEL=stable
 	[..]
-	Image file builds/coreos-stable-899.13.0-qemu/packer-qemu ready
+	Image file builds/coreos-stable-qemu/coreos-stable ready
 	$
 
 
@@ -51,7 +51,7 @@ you may upload the image usng `make`:
 The `register` target also accepts specific CoreOS channels and
 versions:
 
-    $ make register COREOS_CHANNEL=stable COREOS_VERSION=899.13.0 COREOS_MD5_CHECKSUM=31f1756ecdf5bca92a8bff355417598f
+    $ make register COREOS_CHANNEL=stable
 
 If you plan on using OpenNebula's
 [EC2 interface](http://docs.opennebula.org/4.14/advanced_administration/public_cloud/ec2qcg.html),

@@ -1,2 +1,5 @@
 /builds/
+/coreos_production_iso_image.iso.DIGESTS.asc
 /packer_cache/
+/version.txt
+/version.txt.DIGESTS.asc

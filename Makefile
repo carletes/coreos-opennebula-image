@@ -1,10 +1,8 @@
 COREOS_CHANNEL = alpha
-COREOS_VERSION = 1000.0.0
-COREOS_MD5_CHECKSUM = 2207f09699ee37e79c32aae972432059
 OPENNEBULA_DATASTORE = default
 
-PACKER_IMAGE_DIR = builds/coreos-$(COREOS_CHANNEL)-$(COREOS_VERSION)-qemu
-PACKER_IMAGE_NAME = coreos-$(COREOS_CHANNEL)-$(COREOS_VERSION)
+PACKER_IMAGE_DIR = builds/coreos-$(COREOS_CHANNEL)-qemu
+PACKER_IMAGE_NAME = coreos-$(COREOS_CHANNEL)
 PACKER_IMAGE = $(PACKER_IMAGE_DIR)/$(PACKER_IMAGE_NAME)
 PACKER_IMAGE_BZ2 = $(PACKER_IMAGE).bz2
 PACKER_IMAGE_DEPS = \
@@ -26,14 +24,10 @@ $(PACKER_IMAGE): $(PACKER_IMAGE_DEPS)
 	rm -rf $(PACKER_IMAGE_DIR)
 	env \
 	  COREOS_CHANNEL=$(COREOS_CHANNEL) \
-	  COREOS_VERSION=$(COREOS_VERSION) \
-	  COREOS_MD5_CHECKSUM=$(COREOS_MD5_CHECKSUM) \
 	  PACKER_LOG=1 \
 	    ./packer.sh validate coreos.json
 	env \
 	  COREOS_CHANNEL=$(COREOS_CHANNEL) \
-	  COREOS_VERSION=$(COREOS_VERSION) \
-	  COREOS_MD5_CHECKSUM=$(COREOS_MD5_CHECKSUM) \
 	  PACKER_LOG=1 \
 	    ./packer.sh build coreos.json
 	mv $(PACKER_IMAGE_DIR)/packer-qemu $(PACKER_IMAGE)
@@ -48,7 +42,7 @@ register: $(PACKER_IMAGE)
 	-oneimage delete $(OPENNEBULA_IMAGE)
 	oneimage create \
 	  --name $(OPENNEBULA_IMAGE) \
-	  --description "CoreOS $(COREOS_CHANNEL) (version $(COREOS_VERSION))" \
+	  --description "CoreOS $(COREOS_CHANNEL)" \
 	  --type OS \
 	  --driver qcow2 \
 	  --datastore $(OPENNEBULA_DATASTORE) \
@@ -61,7 +55,6 @@ appliance: $(PACKER_IMAGE)
 	./generate-appliance-json.py \
 	  --output appliance.json \
 	  $(COREOS_CHANNEL) \
-	  $(COREOS_VERSION) \
 	  $(PACKER_IMAGE).bz2 \
 	  $(IMAGE_URL)
 

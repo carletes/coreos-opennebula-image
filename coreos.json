@@ -31,7 +31,7 @@
 	    "format": "qcow2",
 	    "headless": "{{user `headless`}}",
 	    "http_directory": "files",
-	    "output_directory": "builds/coreos-{{user `coreos_channel`}}-{{user `coreos_version`}}-qemu",
+	    "output_directory": "builds/coreos-{{user `coreos_channel`}}-qemu",
 	    "qemuargs": [
 		["-m", "{{user `memory`}}"]
 	    ],
