@@ -8,5 +8,10 @@ here="$(cd $(dirname $0) && pwd)"
 
 . $here/opennebula-common
 
+if [ -z "$SSH_PUBLIC_KEY" ] ; then
+  echo "No SSH public key, leaving."
+  exit 0
+fi
+
 echo "Adding OpenNebula SSH public key"
 echo $SSH_PUBLIC_KEY | update-ssh-keys -u core -a coreos-cloudinit
