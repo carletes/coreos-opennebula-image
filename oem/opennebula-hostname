@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -n "$DEBUG" ] ; then
     set -x
@@ -11,38 +11,38 @@ here="$(cd $(dirname $0) && pwd)"
 echo "Setting host name"
 
 if [ -z "$SET_HOSTNAME" ] ; then
-    # No host name provided by user. Try guessing it.
+# No host name provided by user. Try guessing it.
 
-    if [ "$DNS_HOSTNAME" = "YES" ] ; then
-	# Try DNS.
-	for i in $(seq 0 9) ; do
-	    ip_var="ETH${i}_IP"
-	    if [ -n "${!ip_var}" ] ; then
-		hostname="$(host ${!ip_var})"
-		if [ "$?" = "0" ] ; then
-		    SET_HOSTNAME=$hostname
-		    break
-		fi
-	    fi
-	done
+if [ "$DNS_HOSTNAME" = "YES" ] ; then
+# Try DNS.
+for i in $(seq 0 9) ; do
+    ip_var="ETH${i}_IP"
+    if [ -n "${!ip_var}" ] ; then
+        hostname="$(host ${!ip_var})"
+        if [ "$?" = "0" ] ; then
+            SET_HOSTNAME=$hostname
+            break
+        fi
     fi
+done
+fi
 
-    if [ -z "$SET_HOSTNAME" ] ; then
-	# DNS lookup did not work (or lookup was not requested), try
-	# MAC addresses.
-	for i in $(seq 0 9) ; do
-	    mac_var="ETH${i}_MAC"
-	    if [ -n "${!mac_var}" ] ; then
-		SET_HOSTNAME="coreos-$(echo "${!mac_var}" | tr : -)"
-		break
-	    fi
-	done
+if [ -z "$SET_HOSTNAME" ] ; then
+# DNS lookup did not work (or lookup was not requested), try
+# MAC addresses.
+for i in $(seq 0 9) ; do
+    mac_var="ETH${i}_MAC"
+    if [ -n "${!mac_var}" ] ; then
+        SET_HOSTNAME="coreos-$(echo "${!mac_var}" | tr : -)"
+        break
     fi
+done
+fi
 
-    if [ -z "$SET_HOSTNAME" ] ; then
-	# No MAC addresses found
-	SET_HOSTNAME="localhost"
-    fi
+if [ -z "$SET_HOSTNAME" ] ; then
+# No MAC addresses found
+SET_HOSTNAME="localhost"
+fi
 
 fi
 

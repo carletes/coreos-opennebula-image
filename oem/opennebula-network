@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -n "$DEBUG" ] ; then
     set -x
@@ -13,135 +13,136 @@ function setup_interface() {
 
     network_mask_var="${iface}_MASK"
     case "${!network_mask_var}" in
-	"")
-	    ;;
-	128.0.0.0)
-	    netmask=1
-	    ;;
+    "")
+        ;;
 
-	192.0.0.0)
-	    netmask=2
-	    ;;
+    128.0.0.0)
+        netmask=1
+        ;;
 
-	224.0.0.0)
-	    netmask=3
-	    ;;
+    192.0.0.0)
+        netmask=2
+        ;;
 
-	240.0.0.0)
-	    netmask=4
-	    ;;
+    224.0.0.0)
+        netmask=3
+        ;;
 
-	248.0.0.0)
-	    netmask=5
-	    ;;
+    240.0.0.0)
+        netmask=4
+        ;;
 
-	252.0.0.0)
-	    netmask=6
-	    ;;
+    248.0.0.0)
+        netmask=5
+        ;;
 
-	254.0.0.0)
-	    netmask=7
-	    ;;
+    252.0.0.0)
+        netmask=6
+        ;;
 
-	255.0.0.0)
-	    netmask=8
-	    ;;
+    254.0.0.0)
+        netmask=7
+        ;;
 
-	255.128.0.0)
-	    netmask=9
-	    ;;
+    255.0.0.0)
+        netmask=8
+        ;;
 
-	255.192.0.0)
-	    netmask=10
-	    ;;
+    255.128.0.0)
+        netmask=9
+        ;;
 
-	255.224.0.0)
-	    netmask=11
-	    ;;
+    255.192.0.0)
+        netmask=10
+        ;;
 
-	255.240.0.0)
-	    netmask=12
-	    ;;
+    255.224.0.0)
+        netmask=11
+        ;;
 
-	255.248.0.0)
-	    netmask=13
-	    ;;
+    255.240.0.0)
+        netmask=12
+        ;;
 
-	255.252.0.0)
-	    netmask=14
-	    ;;
+    255.248.0.0)
+        netmask=13
+        ;;
 
-	255.254.0.0)
-	    netmask=15
-	    ;;
+    255.252.0.0)
+        netmask=14
+        ;;
 
-	255.255.0.0)
-	    netmask=16
-	    ;;
+    255.254.0.0)
+        netmask=15
+        ;;
 
-	255.255.128.0)
-	    netmask=17
-	    ;;
+    255.255.0.0)
+        netmask=16
+        ;;
 
-	255.255.192.0)
-	    netmask=18
-	    ;;
+    255.255.128.0)
+        netmask=17
+        ;;
 
-	255.255.224.0)
-	    netmask=19
-	    ;;
+    255.255.192.0)
+        netmask=18
+        ;;
 
-	255.255.240.0)
-	    netmask=20
-	    ;;
+    255.255.224.0)
+        netmask=19
+        ;;
 
-	255.255.248.0)
-	    netmask=21
-	    ;;
+    255.255.240.0)
+        netmask=20
+        ;;
 
-	255.255.252.0)
-	    netmask=22
-	    ;;
+    255.255.248.0)
+        netmask=21
+        ;;
 
-	255.255.254.0)
-	    netmask=23
-	    ;;
+    255.255.252.0)
+        netmask=22
+        ;;
 
-	255.255.255.0)
-	    netmask=24
-	    ;;
+    255.255.254.0)
+        netmask=23
+        ;;
 
-	255.255.255.128)
-	    netmask=25
-	    ;;
+    255.255.255.0)
+        netmask=24
+        ;;
 
-	255.255.255.192)
-	    netmask=26
-	    ;;
+    255.255.255.128)
+        netmask=25
+        ;;
 
-	255.255.255.224)
-	    netmask=27
-	    ;;
+    255.255.255.192)
+        netmask=26
+        ;;
 
-	255.255.255.240)
-	    netmask=28
-	    ;;
+    255.255.255.224)
+        netmask=27
+        ;;
 
-	255.255.255.248)
-	    netmask=29
-	    ;;
+    255.255.255.240)
+        netmask=28
+        ;;
 
-	255.255.255.252)
-	    netmask=30
-	    ;;
+    255.255.255.248)
+        netmask=29
+        ;;
 
-	255.255.255.254)
-	    netmask=31
-	    ;;
-	*)
-	    echo "Unsupported netmask ${!network_mask_var}"
-	    exit 1
-	    ;;
+    255.255.255.252)
+        netmask=30
+        ;;
+
+    255.255.255.254)
+        netmask=31
+        ;;
+    *)
+        echo "Unsupported netmask ${!network_mask_var}"
+        exit 1
+        ;;
     esac
 
     ip_address_var="${iface}_IP"
@@ -151,7 +152,7 @@ function setup_interface() {
 
     network_conf="/etc/systemd/network/99-opennebula-$(echo ${!mac_address_var} | tr : -).network"
     if [ -n "$DEBUG" ] ; then
-	network_conf="/tmp/opennebula.network"
+        network_conf="/tmp/opennebula.network"
     fi
 
     echo "${!mac_address_var}: IP Address is ${!ip_address_var}/$netmask"
@@ -170,20 +171,20 @@ EOT
 DHCP=no
 Address=${!ip_address_var}/$netmask
 EOT
-	gateway="${!gateway_var}"
-	if [ -n "$gateway" ] ; then
-	    cat >> $network_conf <<EOT
+        gateway="${!gateway_var}"
+        if [ -n "$gateway" ] ; then
+            cat >> $network_conf <<EOT
 Gateway=$gateway
 EOT
-	fi
-	dns="${!dns_var}"
-	if [ -n "$dns" ] ; then
-	    cat >> $network_conf <<EOT
+        fi
+        dns="${!dns_var}"
+        if [ -n "$dns" ] ; then
+            cat >> $network_conf <<EOT
 DNS=$dns
 EOT
-	fi
+        fi
     else
-	cat >> $network_conf <<EOF
+        cat >> $network_conf <<EOF
 DHCP=yes
 EOF
     fi
@@ -200,6 +201,6 @@ fi
 for iface in ETH0 ETH1 ETH2 ETH3 ETH4 ETH4 ETH6 ETH7 ETH8 ETH9 ; do
     mac_address_var="${iface}_MAC"
     if [ -n "${!mac_address_var}" ] ; then
-	setup_interface $iface
+        setup_interface $iface
     fi
 done

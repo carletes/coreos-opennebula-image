@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -n "$DEBUG" ] ; then
     set -x
@@ -12,8 +12,8 @@ echo "Running cloud-init with user data"
 
 if [ -z "$USER_DATA" ] ; then
     if [ -z "$EC2_USER_DATA" ] ; then
-	echo "No user data, leaving."
-	exit 0
+        echo "No user data, leaving."
+        exit 0
     fi
     USER_DATA="$(echo $EC2_USER_DATA | base64 -d)"
 fi
