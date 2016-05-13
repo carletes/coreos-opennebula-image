@@ -20,10 +20,10 @@
             "iso_url": "http://{{user `coreos_channel`}}.release.core-os.net/amd64-usr/{{user `coreos_version`}}/coreos_production_iso_image.iso",
             "output_directory": "builds/coreos-{{user `coreos_channel`}}-{{user `coreos_version`}}-qemu",
             "qemuargs": [
-                [
-                    "-m",
-                    "{{user `memory`}}"
-                ]
+                ["-m", "{{user `memory`}}"],
+                ["-fsdev", "local,id=conf,security_model=none,readonly,path={{pwd}}/files"],
+                ["-device", "virtio-9p-pci,fsdev=conf,mount_tag=config-2"],
+                ["-device", "virtio-net,netdev=user.0"]
             ],
             "shutdown_command": "sudo -S shutdown -P now",
             "ssh_private_key_file": "files/vagrant_id_rsa",
@@ -40,7 +40,9 @@
             "type": "file"
         },
         {
-            "environment_vars": [],
+            "environment_vars": [
+                "REMOVE_VAGRANT_KEY={{user `remove_vagrant_key`}}"
+            ],
             "scripts": [
                 "scripts/oem.sh",
                 "scripts/cleanup.sh"
@@ -57,6 +59,7 @@
         "install_target": "/dev/vda",
         "iso_checksum": "<not-set>",
         "iso_checksum_type": "md5",
-        "memory": "1024"
+        "memory": "1024",
+        "remove_vagrant_key": "true"
     }
 }
