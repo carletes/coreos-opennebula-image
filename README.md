@@ -35,6 +35,15 @@ parameters to `make`:
 	Image file builds/coreos-stable-899.13.0-qemu/packer-qemu ready
 	$
 
+You may enable compression to generate a compressed bz2 image by passing
+the appropriate parameters to `make`:
+
+    $ make PACKER_IMAGE_COMPRESSION=true
+    [..]
+    bzip2 -9vk builds/coreos-alpha-991.0.0-qemu/packer-qemu
+    [..]
+    Image file builds/coreos-alpha-991.0.0-qemu/packer-qemu ready
+    $
 
 ## Registering the image with OpenNebula
 
