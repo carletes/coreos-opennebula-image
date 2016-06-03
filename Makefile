@@ -40,7 +40,12 @@ $(PACKER_IMAGE): $(PACKER_IMAGE_DEPS)
 	bzip2 -9vk $(PACKER_IMAGE)
 	echo "Image file $(PACKER_IMAGE) ready"
 
-.PHONY: appliance register clean
+.PHONY: latest appliance register clean
+
+latest: COREOS_VERSION = $(shell curl https://$(COREOS_CHANNEL).release.core-os.net/amd64-usr/current/version.txt -s|grep -i '^COREOS_VERSION_ID='|cut -d= -f2-)
+latest: COREOS_MD5_CHECKSUM = $(shell curl -X HEAD -I -s -D - https://$(COREOS_CHANNEL).release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso -o /dev/null|grep -i '^ETAg: '|cut -d: -f2-|tr -d ' "')
+
+latest: $(PACKER_IMAGE)
 
 OPENNEBULA_IMAGE = coreos-$(COREOS_CHANNEL)
 

@@ -15,6 +15,7 @@ You will need:
 * [Packer](https://www.packer.io) (tested with version 0.10.0)
 * [QEMU](http://wiki.qemu.org/Main_Page) (tested with version 2.0.0)
 * [GNU Make](https://www.gnu.org/software/make/)
+* [curl](https://curl.haxx.se/)
 
 A Linux host with KVM support will make the build much faster.
 
@@ -23,6 +24,14 @@ The build process is driven with `make`:
     $ make
 	[..]
 	Image file builds/coreos-alpha-991.0.0-qemu/packer-qemu ready
+	$
+	
+The build the latest version with `make latest`. The version will
+be fetched from the CoreOS website:
+
+    $ make latest
+	[..]
+	Image file builds/coreos-alpha-1053.2.0-qemu/packer-qemu ready
 	$
 
 By default, `make` will build a CoreOS image from the
