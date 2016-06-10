@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Put the OEM `cloud-config` dependent scripts in the right place.
 sudo mkdir /usr/share/oem/bin

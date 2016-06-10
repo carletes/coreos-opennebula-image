@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -x
 
@@ -10,6 +10,7 @@ else
     boot_wait="120s"
 fi
 headless="${HEADLESS:-false}"
+remove_vagrant_key="${REMOVE_VAGRANT_KEY:-true}"
 
 exec packer $1 \
      -var accelerator=$accelerator \
@@ -18,4 +19,5 @@ exec packer $1 \
      -var coreos_channel=$COREOS_CHANNEL \
      -var coreos_version=$COREOS_VERSION \
      -var iso_checksum=$COREOS_MD5_CHECKSUM \
+     -var remove_vagrant_key=$remove_vagrant_key \
      $2
