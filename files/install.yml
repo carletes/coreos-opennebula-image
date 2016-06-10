@@ -69,8 +69,8 @@ coreos:
       content: |
         [Unit]
         Description=User-provided cloud-init setup
-        Requires=network.target,coreos-setup-environment.service
-        After=network.target,coreos-setup-environment.service
+        Requires=network.target coreos-setup-environment.service
+        After=network.target coreos-setup-environment.service
 
         [Service]
         Type=oneshot
