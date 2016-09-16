@@ -148,6 +148,7 @@ function setup_interface() {
     mac_address_var="${iface}_MAC"
     gateway_var="${iface}_GATEWAY"
     dns_var="${iface}_DNS"
+    mtu_var="${iface}_MTU"
 
     network_conf="/etc/systemd/network/99-opennebula-$(echo ${!mac_address_var} | tr : -).network"
     if [ -n "$DEBUG" ] ; then
@@ -161,6 +162,7 @@ MACAddress=${!mac_address_var}
 
 [Link]
 MACAddress=${!mac_address_var}
+MTUBytes=${!mtu_var}
 
 [Network]
 EOT
